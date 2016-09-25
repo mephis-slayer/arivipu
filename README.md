@@ -1,5 +1,5 @@
 # arivipu
-Notification System
+Notification System using NodeJs, Socket.io and redis as the notification message store.
 
 #Dockerized container of redis and sentinel
 
