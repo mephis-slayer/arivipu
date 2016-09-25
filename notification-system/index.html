@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<script src="socket.io.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script>
+			//socket io client
+			var socket = io.connect('http://localhost:3300'); //server.js
+			//on connetion, updates connection state and sends subscribe request
+			socket.on('connect', function(data){
+				setStatus('connected');
+				socket.emit('subscribe', {channel:'notif'});
+			});
+			//when reconnection is attempted, updates status
+			socket.on('reconnecting', function(data){
+				setStatus('reconnecting');
+			});
+			//on new message adds a new message to display
+			socket.on('message', function (data) {
+				var msg = "";
+				if (data.channel) {
+					msg += 'Channel:' + data.channel + ', ' + data.text;
+				} else {
+					msg = data.text;
+				}
+			//addMessage(msg);
+			notifyMe(msg);
+			});
+			//updates status to the status div
+			function setStatus(msg) {
+				$('#status').html('Connection Status : ' + msg);
+			}
+			//adds message to messages div
+			function addMessage(msg) {
+				var str = '<div class="message">' + msg + '</div><hr>';
+				console.log(str)
+				$('#messages').append(str)
+}
+
+function notifyMe(msg) {
+
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+  else if (Notification.permission === "granted") {
+        var options = {
+                body: msg,
+                icon: "icon.jpg",
+                dir : "ltr"
+             };
+          var notification = new Notification("Hi there",options);
+  }
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      if (!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+
+      if (permission === "granted") {
+        var options = {
+              body: msg,
+              icon: "icon.jpg",
+              dir : "ltr"
+          };
+        var notification = new Notification("Hi there",options);
+      }
+    });
+  }
+}
+		</script>
+	</head>
+	<body>
+		<div id="status"></div><br><br>
+		<div id="messages"></div>
+	</body>
+</html>

@@ -1,0 +1,10 @@
+redis:
+  master_name: NSM_LBX_REDIS_0
+  sentinels:
+    - host: 172.17.0.5
+      port: 26379
+    - host: 172.17.0.6
+      port: 26379
+    - host: 172.17.0.6
+      port: 26379
+
