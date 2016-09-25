@@ -1,3 +1,6 @@
+# arivipu
+Notification System
+
 #Dockerized container of redis and sentinel
 
 The configuration contains 3 redis nodes [1 Master and 2 slaves] and 3 sentinel nodes with the quorum setting as "2"
